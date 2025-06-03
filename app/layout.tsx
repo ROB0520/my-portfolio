@@ -17,10 +17,10 @@ export const metadata: Metadata = {
     canonical: '/'
   },
   title: {
-    default: 'Nim - Personal website template',
-    template: '%s | Nim'
+    default: 'Alecz R. | Web Developer',
+    template: '%s | Alecz R.'
   },
-  description:  'Nim is a free and open-source personal website template built with Next.js 15, React 19 and Motion-Primitives.',
+  description: 'Passionate web developer specializing in modern React applications, TypeScript, and full-stack development. Building innovative digital experiences.',
 };
 
 const figtree = Figtree({
