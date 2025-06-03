@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     template: '%s | Alecz R.'
   },
   description: 'Passionate web developer specializing in modern React applications, TypeScript, and full-stack development. Building innovative digital experiences.',
+  openGraph: {
+    images: '/og-image.png',
+  },
 };
 
 const figtree = Figtree({
