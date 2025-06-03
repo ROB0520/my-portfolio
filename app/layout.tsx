@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   openGraph: {
     images: '/og-image.png',
   },
+  other: {
+    "theme-color": '#3b82f6',
+  },
 };
 
 const figtree = Figtree({
