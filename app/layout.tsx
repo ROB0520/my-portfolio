@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Figtree, Fira_Code } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
-import Head from 'next/head'
+import Script from 'next/script'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -45,9 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
-        <script defer src="https://umami.vps.aleczr.link/script.js" data-website-id="397d3853-3c32-42d8-9a6a-70cccf7161b1"></script>
-      </Head>
+      <Script defer src="https://umami.vps.aleczr.link/script.js" data-website-id="397d3853-3c32-42d8-9a6a-70cccf7161b1" />
       <body
         className={`${figtree.variable} ${firaCode.variable} bg-white tracking-tight antialiased dark:bg-zinc-950`}
       >
