@@ -1,29 +1,36 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { XIcon } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { Spotlight } from '@/components/ui/spotlight'
 import { Magnetic } from '@/components/ui/magnetic'
-import {
-  MorphingDialog,
-  MorphingDialogTrigger,
-  MorphingDialogContent,
-  MorphingDialogClose,
-  MorphingDialogContainer,
-} from '@/components/ui/morphing-dialog'
 import { Header } from './header'
 import { Footer } from './footer'
 import Link from 'next/link'
 import { AnimatedBackground } from '@/components/ui/animated-background'
 import {
-  PROJECTS,
   WORK_EXPERIENCE,
   BLOG_POSTS,
   EMAIL,
   SOCIAL_LINKS,
   EDUCATION,
+  PROJECTS,
 } from './data'
 import { cn } from '@/lib/utils'
+import {
+  MorphingDialog,
+  MorphingDialogCarousel,
+  MorphingDialogClose,
+  MorphingDialogContainer,
+  MorphingDialogContent,
+  MorphingDialogDescription,
+  MorphingDialogImage,
+  MorphingDialogSubtitle,
+  MorphingDialogTitle,
+  MorphingDialogTrigger,
+} from '@/components/ui/morphine-carousel-dialog'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { LinkIcon } from 'lucide-react'
 
 const VARIANTS_CONTAINER = {
   hidden: { opacity: 0 },
@@ -95,8 +102,125 @@ export default function Personal() {
         >
           <div className="flex-1">
             <p className="text-zinc-600 dark:text-zinc-400">
-              Web developer skilled in building responsive, user-friendly websites and applications. Experienced in both front-end and back-end development, I focus on clean code, problem-solving, and creating effective digital solutions.
+              Web developer skilled in building responsive, user-friendly
+              websites and applications. Experienced in both front-end and
+              back-end development, I focus on clean code, problem-solving, and
+              creating effective digital solutions.
             </p>
+          </div>
+        </motion.section>
+
+        <motion.section
+          variants={VARIANTS_SECTION}
+          transition={TRANSITION_SECTION}
+        >
+          <h3 className="mb-5 text-lg font-medium">Projects</h3>
+          <div className="gap-2 grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
+            {PROJECTS.map((job, i) => (
+              <MorphingDialog
+                transition={{
+                  type: 'spring',
+                  bounce: 0.05,
+                  duration: 0.35,
+                }}
+                key={"project-" + i}
+              >
+                <MorphingDialogTrigger className="w-full rounded-2xl border border-zinc-200 bg-white hover:shadow-md transition-shadow dark:border-zinc-800 dark:bg-zinc-900">
+                  <MorphingDialogImage
+                    src={job.images[0]}
+                    alt={job.name}
+                    className="h-48 w-full rounded-t-xl border-b"
+                  />
+                  <div className="p-3">
+                    <MorphingDialogTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                      {job.name}
+                    </MorphingDialogTitle>
+                    <MorphingDialogSubtitle className="text-sm text-zinc-500 dark:text-zinc-400">
+                      {job.subtitle}
+                    </MorphingDialogSubtitle>
+                  </div>
+                </MorphingDialogTrigger>
+
+                <MorphingDialogContainer>
+                  <MorphingDialogContent className="max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto rounded-3xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-900">
+                    <MorphingDialogClose />
+
+                    <MorphingDialogCarousel
+                      images={job.images.map((image, index) => ({
+                        src: image,
+                        alt: `${job.name} - Image ${index + 1}`,
+                      }))}
+                      className="h-72 w-full border-b"
+                    />
+
+                    <div className="p-6">
+                      <MorphingDialogTitle className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+                        {job.name}
+                      </MorphingDialogTitle>
+                      <MorphingDialogSubtitle className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                        {job.subtitle}
+                      </MorphingDialogSubtitle>
+
+                      <MorphingDialogDescription
+                        className="mt-4 space-y-4 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300"
+                        variants={{
+                          initial: { opacity: 0, y: 8 },
+                          animate: { opacity: 1, y: 0 },
+                          exit: { opacity: 0, y: 8 },
+                        }}
+                      >
+                        {job.description.split("\n").map((paragraph, index) => (
+                          <p key={index} className="whitespace-pre-line text-justify">
+                            {paragraph}
+                          </p>
+                        ))}
+                      </MorphingDialogDescription>
+
+                      {job.link && (
+                        <Link
+                          href={job.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                        >
+                          <LinkIcon className="size-4" />
+                          Visit Project
+                        </Link>
+                      )}
+                      
+                      {
+                        job.techStack && job.techStack.length > 0 ? (
+                          <>
+                            <h2 className="mt-6 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                              Tech Stack
+                            </h2>
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {job.techStack.map((tech, index) => {
+                                const TechIcon = tech.icon;
+
+                                return (
+                                  <Tooltip key={index}>
+                                    <TooltipTrigger>
+                                      <TechIcon
+                                        className={cn("size-6 fill-current text-zinc-600 dark:text-zinc-400", tech.color ? "hover:text-[var(--tech-color)] dark:hover:text-[var(--tech-dark-color,var(--tech-color))]" : "")}
+                                        style={{ '--tech-color': tech.color, '--tech-dark-color': tech.darkColor } as CSSProperties}
+                                      />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      {tech.name}
+                                    </TooltipContent>
+                                  </Tooltip>
+                                )
+                              })}
+                            </div>
+                          </>
+                        ) : null
+                      }
+                    </div>
+                  </MorphingDialogContent>
+                </MorphingDialogContainer>
+              </MorphingDialog>
+            ))}
           </div>
         </motion.section>
 
@@ -115,7 +239,10 @@ export default function Personal() {
                 key={i}
               >
                 <Spotlight
-                  className={cn(job.spotlightClass || "from-zinc-900 via-zinc-800 to-zinc-700 blur-2xl dark:from-zinc-100 dark:via-zinc-200 dark:to-zinc-50")}
+                  className={cn(
+                    job.spotlightClass ||
+                      'from-zinc-900 via-zinc-800 to-zinc-700 blur-2xl dark:from-zinc-100 dark:via-zinc-200 dark:to-zinc-50',
+                  )}
                   size={64}
                 />
                 <div className="relative h-full w-full rounded-[15px] bg-white p-4 dark:bg-zinc-950">
@@ -128,7 +255,7 @@ export default function Personal() {
                         {job.company}
                       </p>
                     </div>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-right">
+                    <p className="text-right text-zinc-600 dark:text-zinc-400">
                       {job.start} - {job.end}
                     </p>
                   </div>
@@ -150,7 +277,10 @@ export default function Personal() {
                 key={i}
               >
                 <Spotlight
-                  className={cn(educ.spotlightClass || "from-zinc-900 via-zinc-800 to-zinc-700 blur-2xl dark:from-zinc-100 dark:via-zinc-200 dark:to-zinc-50")}
+                  className={cn(
+                    educ.spotlightClass ||
+                      'from-zinc-900 via-zinc-800 to-zinc-700 blur-2xl dark:from-zinc-100 dark:via-zinc-200 dark:to-zinc-50',
+                  )}
                   size={64}
                 />
                 <div className="relative h-full w-full rounded-[15px] bg-white p-4 dark:bg-zinc-950">
@@ -163,7 +293,7 @@ export default function Personal() {
                         {educ.institution}
                       </p>
                     </div>
-                    <p className="text-zinc-600 dark:text-zinc-400 text-right">
+                    <p className="text-right text-zinc-600 dark:text-zinc-400">
                       {educ.start} - {educ.end}
                     </p>
                   </div>
@@ -173,8 +303,7 @@ export default function Personal() {
           </div>
         </motion.section>
 
-        {
-          BLOG_POSTS.length > 0 &&
+        {BLOG_POSTS.length > 0 && (
           <motion.section
             variants={VARIANTS_SECTION}
             transition={TRANSITION_SECTION}
@@ -210,7 +339,7 @@ export default function Personal() {
               </AnimatedBackground>
             </div>
           </motion.section>
-        }
+        )}
 
         <motion.section
           variants={VARIANTS_SECTION}
@@ -219,7 +348,10 @@ export default function Personal() {
           <h3 className="mb-5 text-lg font-medium">Connect</h3>
           <p className="mb-5 text-zinc-600 dark:text-zinc-400">
             Feel free to contact me at{' '}
-            <a className="underline dark:text-zinc-300" href={`mailto:${EMAIL}`}>
+            <a
+              className="underline dark:text-zinc-300"
+              href={`mailto:${EMAIL}`}
+            >
               {EMAIL}
             </a>
           </p>
