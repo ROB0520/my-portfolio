@@ -70,7 +70,7 @@ export function Spotlight({
       ref={containerRef}
       className={cn(
         'pointer-events-none absolute rounded-full blur-xl transition-opacity duration-200',
-        'from-primary/75 via-primary/90 to-primary/95 bg-linear-to-tr',
+        'from-primary/75 via-primary/90 to-primary/95 bg-linear-to-tr/oklch',
         isHovered ? 'opacity-100' : 'opacity-0',
         className,
       )}

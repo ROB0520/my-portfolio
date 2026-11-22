@@ -338,7 +338,7 @@ export const EDUCATION: Education[] = [
     start: '2023',
     end: 'Present',
     spotlightClass:
-      'from-blue-900 via-blue-800 to-orange-700 blur-2xl dark:from-blue-100 dark:via-blue-200 dark:to-orange-50',
+      'from-orange-900 via-orange-800 to-orange-700 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600',
   },
 ]
 
